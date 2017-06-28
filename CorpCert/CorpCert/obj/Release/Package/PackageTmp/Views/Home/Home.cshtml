@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "L2 Test";
+}
+
+<div class="SubmitFloat">
+    <center> </center>
+</div>
+
+<!--
+ _____           _           _     _         _      _____   _____         _
+|  __ \         | |         | |   | |       | |    / __  \ |_   _|       | |
+| |  \/ ___   __| | __ _  __| | __| |_   _  | |    `' / /'   | | ___  ___| |_
+| | __ / _ \ / _` |/ _` |/ _` |/ _` | | | | | |      / /     | |/ _ \/ __| __|
+| |_\ \ (_) | (_| | (_| | (_| | (_| | |_| | | |____./ /___   | |  __/\__ \ |_
+ \____/\___/ \__,_|\__,_|\__,_|\__,_|\__, | \_____/\_____/   \_/\___||___/\__|
+                                      __/ |
+                                     |___/
+-->
+<br />
+<article id="TestRequirements">
+        @Html.Raw(ViewBag.HomePageText)
+</article>
+<br />
+<br />
+<br />
+<form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+    <fieldset>
+        <!-- Text input-->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="formTechID">Enter Your Test ID</label>
+            <div class="col-md-4">
+                <input id="formTechID" name="formTechID" type="text" placeholder="" class="form-control input-md" required="">
+                <span class="help-block" style="color:red;font-weight:700">@ViewBag.Error</span>
+            </div>
+        </div>
+
+        <!-- Button -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="submitButton"></label>
+            <div class="col-md-4">
+                <button id="submitButton" name="submitButton" class="btn btn-success">Take L2 Test</button>
+            </div>
+        </div>
+
+    </fieldset>
+</form>

@@ -1,0 +1,137 @@
+﻿@{
+    Layout = null;
+    L2Test.Helpers.TakeTest ListHelp = new L2Test.Helpers.TakeTest();
+    string TechID = Path.GetFileName(Request.Url.ToString());
+    ViewBag.TechID = TechID;
+    ViewBag.ResultsURL = Url.Action("TestResults", "Home", routeValues: null, protocol: Request.Url.Scheme);
+    ViewBag.ArchiveURL = Url.Action("TestArchive", "Home", routeValues: null, protocol: Request.Url.Scheme);
+}
+
+<!DOCTYPE html>
+
+<html>
+<!--
+    
+ _____           _           _     _         _      _____   _____         _   
+|  __ \         | |         | |   | |       | |    / __  \ |_   _|       | |  
+| |  \/ ___   __| | __ _  __| | __| |_   _  | |    `' / /'   | | ___  ___| |_ 
+| | __ / _ \ / _` |/ _` |/ _` |/ _` | | | | | |      / /     | |/ _ \/ __| __|
+| |_\ \ (_) | (_| | (_| | (_| | (_| | |_| | | |____./ /___   | |  __/\__ \ |_ 
+ \____/\___/ \__,_|\__,_|\__,_|\__,_|\__, | \_____/\_____/   \_/\___||___/\__|
+                                      __/ |                                   
+                                     |___/                                    
+    
+Your test is timed, don't waste that time looking at source code!
+-->
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <title>L2 Test</title>
+</head>
+<body>
+    <section class="TestPageContent">
+        <div class="TimerFloat">
+            <center><div id="timer">...Starting Timer</div></center>
+        </div>
+        <div class="SubmitFloat">
+            <center><button id="SubmitButton" name="SubmitButton" class="btn btn-info" onclick="SendAnswers();">Submit Test for Grading</button></center>
+        </div>
+        <div>
+            <ul class="Test" style="list-style-type:none">
+                @Html.Raw(ListHelp.StartTest())
+            </ul>
+        </div>
+    </section>
+    <script src="../../Scripts/jquery-1.10.2.js"></script>
+    <script src="../../Scripts/bootstrap.js"></script>
+    <script src="../../Scripts/respond.js"></script>
+    <script>
+        //This script section needs to use jquery so that the above file paths are broken when archived preventing the selected answers from being changed and the test from being submitted.
+
+        //Toggel which answer is selected
+        $('.TestAnswer').click(function () {
+            $(this).toggleClass('SelectedAnswer');
+        });
+        $('.SelectedAnswer').click(function () {
+            $(this).toggleClass('TestAnswer');
+        });
+
+        //Count down time left before test auto submits
+        var timeInMinutes = @(ViewBag.TimeToTakeTest);
+        var currentTime = Date.parse(new Date());
+        var deadline = new Date(currentTime + timeInMinutes * 60000);//60000 milliseconds in a minute
+
+        $(document).ready(startTimer(deadline));
+
+        function startTimer(endtime) {
+            var timer = document.getElementById('timer');
+            var changeTime = setInterval(function myTimer() {
+                var timeRemaining = getTimeRemaining(endtime);
+                timer.innerHTML = 'Time Remaining: ' + timeRemaining.minutes + ':' + ('0' + timeRemaining.seconds).slice(-2);
+                if (timeRemaining.total <= 0) {
+                    clearInterval(changeTime);
+                    SendAnswers();
+                } 
+            }, 1000);
+        }
+
+        function getTimeRemaining(endtime) {
+            var timeRemaining = Date.parse(endtime) - Date.parse(new Date());
+            var seconds = Math.floor((timeRemaining / 1000) % 60); //1000 milliseconds in second, modulus 60 to only get remainder  after minutes have been accounted for.
+            var minutes = Math.floor((timeRemaining / 60000)); //60000 milliseconds in a minute
+
+            return {
+                'total': timeRemaining,
+                'minutes': minutes,
+                'seconds': seconds
+            };
+        }
+
+        function SendAnswers() {
+
+            var tech = '@(ViewBag.TechID)';
+            var htmlString = document.documentElement.innerHTML;
+
+            $.ajax({
+                url: "@(ViewBag.ArchiveURL)",
+                type: "POST",
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify({ html: htmlString, tech: tech })
+            });
+
+            var list = [];
+            for (var i = 0; i < document.getElementsByTagName("li").length; i++) {
+                var answer = {};
+                var answers = [];
+                var currentQuestion = document.getElementsByTagName("li")[i];
+                answer.tech = tech;
+                answer.question = currentQuestion.getAttribute("id");
+                for (var n = 0; n < currentQuestion.childNodes.length; n++) {
+                    if (currentQuestion.childNodes[n].className == "TestAnswer SelectedAnswer") {
+                        answers.push(currentQuestion.childNodes[n].id);
+                    }
+                }
+                answer.answers = answers;
+                list.push(answer);
+            }
+            $.ajax({
+                url: "@(ViewBag.ResultsURL)",
+                type: "POST",
+                contentType: "application/json",
+                dataType: "text",
+                data: JSON.stringify(list),
+                success: function (data) {
+                    $('.TestPageContent').html(data);
+                },
+                error: function () {
+                    alert("Test not graded, a lead will need to manually grade this test.");
+                }
+            });
+
+        }
+    </script>
+</body>
+</html>

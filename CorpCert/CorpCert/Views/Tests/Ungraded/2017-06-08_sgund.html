@@ -1,0 +1,204 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width'/><link rel='stylesheet' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css'><link rel='stylesheet' type='text/css' href='C:\Source\L2Test\L2Test\L2Test\Content\Site.css'><title>L2 Test</title></head><body><!--
+    
+ _____           _           _     _         _      _____   _____         _   
+|  __ \         | |         | |   | |       | |    / __  \ |_   _|       | |  
+| |  \/ ___   __| | __ _  __| | __| |_   _  | |    `' / /'   | | ___  ___| |_ 
+| | __ / _ \ / _` |/ _` |/ _` |/ _` | | | | | |      / /     | |/ _ \/ __| __|
+| |_\ \ (_) | (_| | (_| | (_| | (_| | |_| | | |____./ /___   | |  __/\__ \ |_ 
+ \____/\___/ \__,_|\__,_|\__,_|\__,_|\__, | \_____/\_____/   \_/\___||___/\__|
+                                      __/ |                                   
+                                     |___/                                    
+    
+Your test is timed, don't waste that time looking at source code!
+--><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link href="/Content/bootstrap.css" rel="stylesheet">
+<link href="/Content/site.css" rel="stylesheet">
+
+    <script src="/Scripts/modernizr-2.6.2.js"></script>
+
+    <title>L2 Test</title>
+<style id="style-1-cropbar-clipper">/* Copyright 2014 Evernote Corporation. All rights reserved. */
+.en-markup-crop-options {
+    top: 18px !important;
+    left: 50% !important;
+    margin-left: -100px !important;
+    width: 200px !important;
+    border: 2px rgba(255,255,255,.38) solid !important;
+    border-radius: 4px !important;
+}
+
+.en-markup-crop-options div div:first-of-type {
+    margin-left: 0px !important;
+}
+</style></head>
+<body>
+    <section class="TestPageContent">
+        <div class="TimerFloat">
+            <center><div id="timer">Time Remaining: 89:08</div></center>
+        </div>
+        <div class="SubmitFloat">
+            <center><button id="SubmitButton" name="SubmitButton" class="btn btn-info" onclick="SanityCheck();">Submit Test for Grading</button></center>
+        </div>
+        <div>
+            <ul class="Test" style="list-style-type:none">
+                <li class="well" id="3"><p class="TestQuestion"><img src="/Content/Images/Japan2012.Hakone.P1030272G83BQjBnZA.JPG" height="200" id="picSample"><br>1: Is this a picture?</p><span class="ShowComment" tabindex="0">Comment</span><div class="HideComment"><textarea class="form-control" name="Comment" maxlength="400"></textarea></div><p class="TestAnswer SelectedAnswer" id="wwwOCqkTQ8">A. Yes</p><p class="TestAnswer" id="i9LtPJXqnn">B. No</p></li><li class="well" id="6"><p class="TestQuestion">2: Select 5</p><span class="ShowComment" tabindex="0">Comment</span><div class="HideComment"><textarea class="form-control" name="Comment" maxlength="400"></textarea></div><p class="TestAnswer" id="9CPmmvpdnU">A. 4</p><p class="TestAnswer" id="cAp2zaDcbx">B. 2</p><p class="TestAnswer SelectedAnswer" id="vaCoKRGWnb">C. 5</p><p class="TestAnswer" id="0n9TvRvIcv">D. 3</p><p class="TestAnswer" id="ynAti7BZDZ">E. 1</p></li><li class="well" id="2"><p class="TestQuestion">3: Select 6 and 12</p><span class="ShowComment" tabindex="0">Comment</span><div class="HideComment"><textarea class="form-control" name="Comment" maxlength="400"></textarea></div><p class="TestAnswer" id="iery6LEaxc">A. 7</p><p class="TestAnswer SelectedAnswer" id="hqirObgbv1">B. 12</p><p class="TestAnswer SelectedAnswer" id="7QkzrXXqHa">C. 6</p><p class="TestAnswer" id="BKC3uYTtxQ">D. 1</p><p class="TestAnswer" id="VbfUIhDupP">E. 4</p><p class="TestAnswer" id="zemOQy6spi">F. 14</p><p class="TestAnswer" id="tnWoHziKuD">G. 10</p><p class="TestAnswer" id="vg8pce1PDV">H. 9</p><p class="TestAnswer" id="9OWmutQPb0">I. 3</p><p class="TestAnswer" id="UYGLSIqkGT">J. 13</p><p class="TestAnswer" id="J8lPa4rhrS">K. 11</p><p class="TestAnswer" id="MKV7joxOTN">L. 2</p><p class="TestAnswer" id="VdydiIPHhq">M. 8</p><p class="TestAnswer" id="EA9pee8JRW">N. 5</p></li><li class="well" id="1"><p class="TestQuestion">4: Select True</p><span class="ShowComment" tabindex="0">Comment</span><div class="HideComment"><textarea class="form-control" name="Comment" maxlength="400"></textarea></div><p class="TestAnswer SelectedAnswer" id="E8VrBgzMDi">A. False</p><p class="TestAnswer" id="DM4YKF4gb7">B. True</p></li>
+            </ul>
+        </div>
+    </section>
+    <script src="../../Scripts/jquery-1.10.2.js"></script>
+    <script src="../../Scripts/bootstrap.js"></script>
+    <script src="../../Scripts/respond.js"></script>
+    <script>
+        //This script section needs to use jquery so that the above file paths are broken when archived preventing the selected answers from being changed and the test from being submitted.
+
+        //Toggel which answer is selected
+        $('.TestAnswer').click(function () {
+            $(this).toggleClass('SelectedAnswer');
+        });
+        $('.SelectedAnswer').click(function () {
+            $(this).toggleClass('TestAnswer');
+        });
+
+        //Show Comment box
+        $('.ShowComment').click(function () {
+            $(this).next('.HideComment').show();
+        });
+
+        //Count down time left before test auto submits
+        var timeInMinutes = 90;
+        var currentTime = Date.parse(new Date());
+        var deadline = new Date(currentTime + timeInMinutes * 60000);//60000 milliseconds in a minute
+        var testSubmitted = false;
+
+        $(document).ready(startTimer(deadline));
+
+        function startTimer(endtime) {
+            var timer = document.getElementById('timer');
+            var changeTime = setInterval(function myTimer() {
+                var timeRemaining = getTimeRemaining(endtime);
+                timer.innerHTML = 'Time Remaining: ' + timeRemaining.minutes + ':' + ('0' + timeRemaining.seconds).slice(-2);
+                if (timeRemaining.total <= 0 && testSubmitted != true) {
+                    clearInterval(changeTime);
+                    SendAnswers();
+                }
+            }, 1000);
+        }
+
+        function getTimeRemaining(endtime) {
+            var timeRemaining = Date.parse(endtime) - Date.parse(new Date());
+            var seconds = Math.floor((timeRemaining / 1000) % 60); //1000 milliseconds in second, modulus 60 to only get remainder  after minutes have been accounted for.
+            var minutes = Math.floor((timeRemaining / 60000)); //60000 milliseconds in a minute
+
+            return {
+                'total': timeRemaining,
+                'minutes': minutes,
+                'seconds': seconds
+            };
+        }
+
+        function SendAnswers() {
+
+            var tech = 'S3fpb4JXPY';
+            var htmlString = document.documentElement.innerHTML;
+
+            //send snapshot of HTML before grading
+            $.ajax({
+                url: "http://localhost:55966/Home/TestArchive",
+                type: "POST",
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify({ html: htmlString, tech: tech }),
+            });
+
+            var list = [];
+
+            for (var i = 0; i < document.getElementsByTagName("li").length; i++) {
+                var answer = {};
+                var answers = [];
+                var currentQuestion = document.getElementsByTagName("li")[i];
+
+                answer.tech = tech;
+                answer.question = currentQuestion.getAttribute("id");
+                alert("getting hairy");
+
+                for (var n = 0; n < currentQuestion.childNodes.length; n++) {
+                    currentNode = currentQuestion.childNodes[n];
+                    if (currentNode.className == "TestAnswer SelectedAnswer") {
+                        answers.push(currentNode.id);
+                    }
+                    else if (currentNode.className == "HideComment") {
+                        answer.comment = currentNode.childNodes[0].value;
+                    }
+                }
+
+                answer.answers = answers;
+                list.push(answer);
+            }
+
+            //Submit results for grading
+            $.ajax({
+                url: "http://localhost:55966/Home/TestResults",
+                type: "POST",
+                contentType: "application/json",
+                dataType: "text",
+                data: JSON.stringify(list),
+                success: function (data) {
+                    $('.TestPageContent').html(data);
+                },
+                error: function () {
+                    alert("Test not graded, a lead will need to manually grade this test.");
+                }
+            });
+
+            testSubmitted = true;
+        }
+
+        function SanityCheck(){
+            var htmlString = document.documentElement.innerHTML;
+            var answered = 0;
+            var total = 0;
+
+            for (var i = 0; i < document.getElementsByTagName("li").length; i++) {
+                var selected = false;
+                var currentQuestion = document.getElementsByTagName("li")[i];
+                total++;
+
+                for (var n = 0; n < currentQuestion.childNodes.length; n++) {
+                    if (currentQuestion.childNodes[n].className == "TestAnswer SelectedAnswer") {
+                        selected = true;
+                    }
+                }
+                if (selected) {
+                    answered++;
+                }
+            }
+
+            //Change to activate a modal with submit button in it
+            if(total == answered){
+                if (confirm('Are you sure you want to submit your test for grading?')) {
+                    SendAnswers();
+                } else {
+                    // Do nothing!
+                }
+            }
+            else{
+                if (confirm("You have " + (total - answered) + " questions without answers. Are you sure you want to submit the answers?")) {
+                    SendAnswers();
+                } else {
+                    // Do nothing!
+                }
+            }
+        }
+    </script>
+
+<!-- Visual Studio Browser Link -->
+<script type="application/json" id="__browserLink_initializationData">
+    {"appName":"Chrome","requestId":"9f9b3af851cd41c1ada60f391f4c7ceb"}
+</script>
+<script type="text/javascript" src="http://localhost:58404/af71aa2dc71b44188866328fa5cf9343/browserLink" async="async"></script>
+<!-- End Browser Link -->
+
+
+</body></body></html>

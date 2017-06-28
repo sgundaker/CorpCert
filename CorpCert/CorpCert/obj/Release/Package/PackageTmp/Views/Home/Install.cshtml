@@ -1,0 +1,121 @@
+﻿@{
+    Layout = null;
+    ViewBag.CheckURL = Url.Action("CheckDB", "Home", routeValues: null, protocol: Request.Url.Scheme);
+    ViewBag.ConfigURL = Url.Action("ConfigDB", "Home", routeValues: null, protocol: Request.Url.Scheme);
+    string Message = "Please configure or test the database connection";
+    if (TempData["DBCheckResult"] != null)
+    {
+        Message = TempData["DBCheckResult"].ToString();
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <title>L2 Test Initial Setup</title>
+</head>
+<body>
+    <center><h1>L2 Test Installation</h1></center>
+    <div class="container-fluid">
+        <section class="row">
+            <center>
+                <!--Config DB Form-->
+                <div class="col-md-4">
+                    <div class="wrapper">
+                        <form action="@ViewBag.ConfigURL" method="post" enctype="multipart/form-data" class="form-horizontal">
+                            <fieldset>
+
+                                <!-- Form Name -->
+                                <legend>MSSQL Database Connection Config</legend>
+
+                                <!-- Text input-->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="dbPath">Path to Database</label>
+                                    <div class="col-md-4">
+                                        <input id="dbPath" name="dbPath" type="text" placeholder=".\SQLEXPRESS" class="form-control input-md">
+                                        <span class="help-block">The default path is ".\SQLEXPRESS" </span>
+                                    </div>
+                                </div>
+
+                                <!-- Text input-->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="dbPath">Database Name</label>
+                                    <div class="col-md-4">
+                                        <input id="dbName" name="dbName" type="text" placeholder="L2TestDB" class="form-control input-md">
+                                        <span class="help-block">The default name is "L2TestDB" </span>
+                                    </div>
+                                </div>
+
+                                <!-- Text input-->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="dbUser">Username</label>
+                                    <div class="col-md-4">
+                                        <input id="dbUser" name="dbUser" type="text" placeholder="" class="form-control input-md" required="">
+
+                                    </div>
+                                </div>
+
+                                <!-- Password input-->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="dbPassword">Password</label>
+                                    <div class="col-md-4">
+                                        <input id="dbPassword" name="dbPassword" type="password" placeholder="" class="form-control input-md" required="">
+
+                                    </div>
+                                </div>
+
+                                <!-- Button -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="dbSubmit"></label>
+                                    <div class="col-md-8">
+                                        <button id="dbSubmit" name="dbSubmit" class="btn btn-success">Submit Config</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+                <!--Results-->
+                <div class="col-md-4">
+                    <div class="wrapper">
+                        <p>Results:<br/>@Html.Raw(Message)</p>
+                     </div>
+                </div>
+                <!--Test DB Form-->
+                <div class="col-md-4">
+                    <div class="wrapper">
+                        <form action="@ViewBag.CheckURL" method="post" enctype="multipart/form-data" class="form-horizontal">
+                            <fieldset>
+                                <!-- Form Name -->
+                                <legend>Test the Database</legend>
+                                <!-- Button -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="dbSubmit"></label>
+                                    <div class="col-md-8">
+                                        <button id="dbTest" name="dbTest" class="btn btn-info">Test Database</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </center>
+        </section>
+    </div>
+<br />
+    <p>Enter the database configuration information before testing the database connection. If you are not sure what to do on this page please refer to the installation guide.</p>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

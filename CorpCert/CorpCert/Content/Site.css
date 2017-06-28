@@ -1,0 +1,349 @@
+﻿body {
+    font-family: Arial, Helvetica, sans-serif;
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+h1{
+    text-align: left;
+    font-size: 150%;
+    font-weight: bold;
+}
+
+h2{
+   text-align: center; 
+}
+
+h3 {
+    text-decoration: none;
+}
+
+h4 {
+    color: red !important;
+    font-size: 200%;
+    text-align: center;        
+}
+
+.navbar {
+    background-color: #333333;
+    border-color: #32900D;
+}
+
+.navbar .navbar-brand {
+    color: #ffffff;
+    font-variant: small-caps;
+    font-weight:bold;
+    padding: 15px 50px;
+}
+
+.navbar .navbar-brand:hover, 
+.navbar .navbar-brand:focus{
+    color: white;
+}
+
+.navbar .navbar-text {st q
+    color: #FFFFFF;
+}
+
+.navbar .navbar-nav > li > a {
+    color: greenyellow;
+}
+
+.navbar .navbar-nav > .active > a, 
+.navbar .navbar-nav > .active > a:hover, 
+.navbar .navbar-nav > .active > a:focus {
+    color: greenyellow;
+    background-color: #32900d;
+}
+
+ul.nav a:hover {
+    color: black !important;
+    background-color: greenyellow;
+}
+
+.navbar .navbar-toggle {
+    border-color: greenyellow;
+}
+
+.navbar .navbar-toggle:hover, 
+.navbar .navbar-toggle:focus {
+    background-color: greenyellow;
+}
+
+.navbar .navbar-toggle .icon-bar {
+    background-color: greenyellow;
+}
+
+.navbar .navbar-collapse, 
+.navbar .navbar-form {
+    border-color: #ffffff;
+}
+
+.btn-success {
+    color: black;
+}
+
+.btn-danger {
+    color: black;
+}
+
+.btn-warning {
+    color:black;
+}
+
+.btn-info {
+    color:black;
+}
+
+.btn-success.outline{
+    background:none;
+    padding: 1px 1px;    
+}
+
+.comment-box {
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 45px;
+}
+
+.comment-box {
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 45px;
+}
+
+.form-control{
+    padding-bottom: 1px;
+    padding-right: 15px;
+    padding-left:15px
+    border: 2px;
+}
+
+p.TechComment{
+    border: 1px solid black double;
+    border-style:double;
+    padding-left:2px;
+    box-shadow: 5px 10px 5px #ed886f;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/*Test Formating */
+
+.well{
+    padding: 18px 10px;
+}
+
+.Test{
+    list-style:none;
+    padding-left:15px;
+    padding-right:15px;
+}
+
+.TestQuestion, .TestResultQuestion{
+    background-color: white;
+    font-size:1.5em;
+    margin-bottom:20px;
+    padding: 0px 5px;
+    display: inline-block;
+    text-align: justify;
+    width: 100%;
+}
+
+.SubmitFloat{
+    position: fixed;
+    z-index: 10000;
+    bottom: 0;
+    left:0;
+    font-weight:bold;
+    background: #222222;
+	line-height: 2em;
+	padding: .5em 1em .5em 1em;
+    width: 100%;
+}
+
+.TimerFloat{
+    position: fixed;
+    z-index: 10000;
+    top: 0;
+    left: 0;
+    font-weight:bold;
+    background: #222222;
+	line-height: 2em;
+	padding: .5em 1em .5em 1em;
+    width: 100%;
+    color: antiquewhite;
+}
+
+.TestAnswer{
+    background-color:white;
+    margin-top: -5px;
+    padding: 0px 5px;
+}
+
+.SelectedAnswer{
+    background-color: cornflowerblue;
+    margin-top: -5px;
+    padding: 0px 5px;
+}
+
+.CorrectAnswer{
+    background-color: greenyellow;
+    margin-top: -5px;
+    padding: 0px 5px;
+}
+
+.WrongAnswer{
+    background-color: orangered;
+    margin-top: -5px;
+    padding: 0px 5px;
+}
+
+#picSample{
+    margin:5px;
+    border:3px solid white;
+    border-radius:8px;
+}
+
+/*The following section auto hides comment box*/
+.ShowComment{
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 0px 5px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1em;
+    float: right;
+}
+
+.HideComment{
+    display:none;
+}
+
+/*Test Edit Page Formatting*/
+
+.TestEdit{
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 3px 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.2em;
+    float: right;
+    border-radius:8px;
+}
+
+.TestCatagory{
+    float: right;
+    font-weight:700;
+}
+
+.TestAnswerTrue{
+    background-color: greenyellow;
+    margin-top: -5px;
+    padding: 0px 5px;
+}
+
+.TestAnswerFalse{
+    background-color:white;
+    margin-top: -5px;
+    padding: 0px 5px;
+}
+
+/*Test results tech view formatting*/
+.TechViewResults{
+    font-size:2.5em;
+    padding: 0px 150px;
+}
+
+.greenResult{
+	background-color: greenyellow;
+    text-align: center;
+	padding-top:8px;
+	padding-bottom:8px;
+}
+
+.yellowResult{
+	background-color: yellow;
+    text-align: center;
+	padding-top:8px;
+	padding-bottom:8px;
+}
+
+.redResult{
+	background-color: orangered;
+    text-align: center;
+	padding-top:8px;
+	padding-bottom:8px;
+}
+
+/*Test results formatting*/
+
+.LeadViewResults{
+    font-size:2em;
+    padding: 0px 150px;
+}
+
+/*User management*/
+
+.modal-title{
+    list-style:none;
+    font-size:1.8em;
+}
+
+.ActiveLeads{
+    list-style:none;
+    padding-left:0px;
+}
+
+.ActiveLeads li {
+    padding:10px 5px;
+    background-color:#f9f9f9;
+    margin: 2px 0px;
+    border-radius: 8px;
+}
+
+.ActiveLeads button{
+    padding: 3px 5px;
+    margin: -3px 3px;
+    float: right;
+}
+
+.ActiveTechs{
+    list-style:none;
+    padding-left:0px;
+}
+
+.passwordList{
+    padding:10px 5px;
+    background-color:#f9f9f9;
+    margin: 2px 0px;
+    border-radius: 8px;
+}
+
+/*Displaying past test URL's*/
+.record{
+    background-color: white;
+    font-size:1.5em;
+    margin-bottom:20px;
+    padding: 0px 5px;
+}
+
+.modal-body {
+    height:auto;
+    overflow:auto;
+}

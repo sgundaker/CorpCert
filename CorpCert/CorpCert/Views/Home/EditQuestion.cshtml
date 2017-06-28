@@ -1,0 +1,166 @@
+﻿@{
+    ViewBag.Title = "Edit Question";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string CurrentQuestion = Path.GetFileName(Request.Url.ToString());
+    L2Test.Helpers.EditTest ListHelp = new L2Test.Helpers.EditTest();
+    ViewBag.ResultsURL = Url.Action("EditQuestion", "Home", routeValues: null, protocol: Request.Url.Scheme);
+}
+<div class="SubmitFloat">
+        <h4><strong>Warning!</strong> Do not make changes to the test questions while someone is taking the test!</h4>
+</div>
+<!--
+ _____           _           _     _         _      _____   _____         _
+|  __ \         | |         | |   | |       | |    / __  \ |_   _|       | |
+| |  \/ ___   __| | __ _  __| | __| |_   _  | |    `' / /'   | | ___  ___| |_
+| | __ / _ \ / _` |/ _` |/ _` |/ _` | | | | | |      / /     | |/ _ \/ __| __|
+| |_\ \ (_) | (_| | (_| | (_| | (_| | |_| | | |____./ /___   | |  __/\__ \ |_
+ \____/\___/ \__,_|\__,_|\__,_|\__,_|\__, | \_____/\_____/   \_/\___||___/\__|
+                                      __/ |
+                                     |___/
+-->
+<br />
+@Html.Raw(ListHelp.SingleQuestionString(CurrentQuestion))
+
+<!--************************Delete question*****************************-->
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" id="editbtn" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Are you sure you want to remove this question?</h3>
+            <div class="modal-body">
+                </div>
+
+                <!--FORM STARTS HERE-->
+                <form action="@Url.Action("Delete", "Home")" method="post" enctype="multipart/form-data" class="form-horizontal">
+                    <fieldset>
+                        <input type="hidden" name="uid" value="@CurrentQuestion">
+                        <!-- Delete Button -->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="submitButton"></label>
+                            <div class="col-md-offset-4">
+                                <button id="submitButton" name="submitButton" class="btn btn-success">Remove Question</button>
+                                <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form> <!--FORM ENDS HERE-->
+            </div>  <!--Modal Body-->
+
+        </div> <!--Modal Content-->
+    </div> <!--Modal Dialog-->
+</div><!--End Modal-->
+
+@section scripts{
+    <script>
+        function AddAnswer() {
+            $("<div class='form-group col-md-12'><label class='col-md-4 control-label' for='formAnswer'>Answer: </label><div class='col-md-8'><div class='input-group'><input id='formAnswer' name='formAnswer' class='form-control' type='text' maxlength='255'><span class='input-group-addon'><input type='checkbox' name='formC' class='checkbox_check' value='1'></span></div></div></div>").insertBefore("#AddHere");
+        }
+
+        function SendQuestion() {
+            var formData = new FormData();
+            var formFile = document.getElementById("filebutton").files[0];
+            if (formFile != null){
+                formData.append("file", formFile);
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/Home/UploadImage", true);
+                xhr.addEventListener("load", function (evt) { UploadComplete(evt, xhr.responseText); }, false);
+                xhr.addEventListener("error", function (evt) { UploadFailed(evt, xhr.responseText); }, false);
+                xhr.send(formData);
+            }
+            else
+            {
+                var Answers = document.getElementsByName("formAnswer");
+                var Corrects = document.getElementsByName("formC");
+                var JSONObj = {};
+                JSONObj.Question = document.getElementsByName("formQuestion")[0].value;
+                JSONObj.QuestionID = @CurrentQuestion;
+                JSONObj.Pic = document.getElementsByName("picURL")[0].value;
+                JSONObj.Catagory = document.getElementsByName("newCategory")[0].value;
+                JSONObj.CategoryDropDown = document.getElementsByName("formCategory")[0].value;
+                JSONObj.Answers = [];
+                JSONObj.Corrects = [];
+                for (var i = 0; i < Answers.length; i++) {
+                    JSONObj.Answers.push(Answers[i].value);
+                    if (Corrects[i].checked) {
+                        JSONObj.Corrects.push(1);
+                    } else {
+                        JSONObj.Corrects.push(0);
+                    }
+                }
+
+                $.ajax({
+                    url: "@(ViewBag.ResultsURL)",
+                    type: "POST",
+                    contentType: "application/json",
+                    dataType: "json",
+                    data: JSON.stringify(JSONObj),
+                    success: function (data) {
+                        if (data != null) {
+                            window.location.href = '@Url.Action("Edit", "Home")';
+                        } else {
+                            alert("ERROR:Data not submitted");
+                        }
+                    }
+                });
+            }
+        }
+
+        function UploadComplete(evt, name) {
+            if (evt.target.status == 200) {
+
+                var Answers = document.getElementsByName("formAnswer");
+                var Corrects = document.getElementsByName("formC");
+
+                var JSONObj = {};
+                JSONObj.Question = document.getElementsByName("formQuestion")[0].value;
+                JSONObj.QuestionID = @CurrentQuestion;
+                JSONObj.Pic = name;
+                JSONObj.Catagory = document.getElementsByName("newCategory")[0].value;
+                JSONObj.CategoryDropDown = document.getElementsByName("formCategory")[0].value;
+                JSONObj.Answers = [];
+                JSONObj.Corrects = [];
+
+                for (var i = 0; i < Answers.length; i++) {
+                    JSONObj.Answers.push(Answers[i].value);
+                    if (Corrects[i].checked) {
+                        JSONObj.Corrects.push(1);
+                    } else {
+                        JSONObj.Corrects.push(0);
+                    }
+                }
+
+                $.ajax({
+                    url: "@(ViewBag.ResultsURL)",
+                    type: "POST",
+                    contentType: "application/json",
+                    dataType: "json",
+                    data: JSON.stringify(JSONObj),
+                    success: function (data) {
+                        if (data != null) {
+                            window.location.href = '@Url.Action("Edit", "Home")';
+                        } else {
+                            alert("ERROR:Data not submitted");
+                        }
+                    }
+                });
+            }
+            else {
+                alert("Error Uploading File" + name);
+            }
+        }
+
+        function UploadFailed(evt, name) {
+            alert("There was an error attempting to upload the file." + name);
+
+        }
+
+        function NoImage(){
+            document.getElementById("picURL").setAttribute("value", "No Image");
+            document.getElementById("picSample").setAttribute("style", "margin:5px; border:1px solid white; border-radius:3px; opacity: 0.3;")
+        }
+    </script>
+}

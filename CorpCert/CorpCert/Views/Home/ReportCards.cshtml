@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "ReportCards";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.ResultsURL = Url.Action("ReportCards", "Archive", routeValues: null, protocol: Request.Url.Scheme);
+}
+
+<div class="SubmitFloat">
+    <center></center>
+</div>
+
+<!--
+ _____           _           _     _         _      _____   _____         _
+|  __ \         | |         | |   | |       | |    / __  \ |_   _|       | |
+| |  \/ ___   __| | __ _  __| | __| |_   _  | |    `' / /'   | | ___  ___| |_
+| | __ / _ \ / _` |/ _` |/ _` |/ _` | | | | | |      / /     | |/ _ \/ __| __|
+| |_\ \ (_) | (_| | (_| | (_| | (_| | |_| | | |____./ /___   | |  __/\__ \ |_
+ \____/\___/ \__,_|\__,_|\__,_|\__,_|\__, | \_____/\_____/   \_/\___||___/\__|
+                                      __/ |
+                                     |___/
+-->
+
+<div class="row">
+    <div class="col-xs-6 col-sm-6 col-lg-6">
+        <center>
+            <h3>Graded Tests</h3>
+            <ul class="Test">
+                @Html.Raw(ViewBag.GradedResults)
+            </ul>
+        </center>
+    </div>
+    <div class="col-xs-6 col-sm-6 col-lg-6">
+        <center>
+            <h3>Not Graded Archive</h3>
+            <ul class="Test">
+                @Html.Raw(ViewBag.ArchiveResults)
+            </ul>
+        </center>
+    </div>
+</div>
+<form action="/L2Test/Complete/Archive/ReportCards" method="POST" id="formSubmit">
+    <div id="data"></div><input type="hidden" name="filepath" value="">
+</form>
+    @section scripts{
+        <script>
+            $('.getTest').click(function () {
+                var filepath = $(this).attr('id');
+                var data = document.getElementById('data');
+                data.innerHTML = '<input type="hidden" name="filepath" value="' + filepath + '">'
+                $('#formSubmit').submit();
+            });
+        </script>
+    }

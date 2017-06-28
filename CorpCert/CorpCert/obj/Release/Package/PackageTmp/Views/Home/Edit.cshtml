@@ -1,0 +1,181 @@
+﻿@{
+    ViewBag.Title = "Edit Test";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    L2Test.Helpers.EditTest ListHelp = new L2Test.Helpers.EditTest();
+    ViewBag.ResultsURL = Url.Action("Edit", "Home", routeValues: null, protocol: Request.Url.Scheme);
+    ViewBag.UploadURL = Url.Action("UploadImage", "Home", routeValues: null, protocol: Request.Url.Scheme);
+}
+<!--
+ _____           _           _     _         _      _____   _____         _
+|  __ \         | |         | |   | |       | |    / __  \ |_   _|       | |
+| |  \/ ___   __| | __ _  __| | __| |_   _  | |    `' / /'   | | ___  ___| |_
+| | __ / _ \ / _` |/ _` |/ _` |/ _` | | | | | |      / /     | |/ _ \/ __| __|
+| |_\ \ (_) | (_| | (_| | (_| | (_| | |_| | | |____./ /___   | |  __/\__ \ |_
+ \____/\___/ \__,_|\__,_|\__,_|\__,_|\__, | \_____/\_____/   \_/\___||___/\__|
+                                      __/ |
+                                     |___/
+-->
+<h1 style="color:orangered;">@ViewBag.Err</h1>
+
+<div class="SubmitFloat">
+    <center><button type="button" class="btn btn-lg" data-toggle="modal" data-target="#addModal">Add New Question</button></center>
+</div>
+
+<!--************************Add Question***************************-->
+<div class="modal fade" id="addModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" id="editbtn" class="close" data-dismiss="modal">&times;</button>
+                <h2 class="modal-title">Add New Question</h2>
+                <center><p>Put a check mark next to all correct answers.</p></center>
+            </div>
+            <div class="modal-body">
+                <fieldset>
+                    <!-- Get Question -->
+                    <div class="form-group col-md-12">
+                        <label class="col-md-4 control-label" for="formQuestion">Question: </label>
+                        <div class="col-md-8">
+                            <textarea class="form-control" id="formQuestion" name="formQuestion" maxlength="899"></textarea>
+                        </div>
+                    </div>
+                    <!-- Get Category -->
+                    <div class="form-group col-md-12">
+                        <label class="col-md-4 control-label" for="formCategory">Select Category</label>
+                        <div class="col-md-8">
+                            <select id="formCategory" name="formCategory" class="form-control">
+                                <option value="1">New Categoy</option>
+                                @Html.Raw(ListHelp.CategoryList())
+                            </select>
+                        </div>
+                    </div>
+                    <!-- New Category-->
+                    <div class="form-group col-md-12">
+                        <label class="col-md-4 control-label" for="newCategory">New Category:</label>
+                        <div class="col-md-8">
+                            <input id="newCategory" name="newCategory" type="text" placeholder="" class="form-control input-md">
+                        </div>
+                    </div>
+                    <!-- Get Answer1 -->
+                    <div class="form-group col-md-12">
+                        <label class="col-md-4 control-label" for="formAnswer">Answer: </label>
+                        <div class="col-md-8">
+                            <div class="input-group">
+                                <input id="formAnswer" name="formAnswer" class="form-control" type="text" maxlength="255">
+                                <span class="input-group-addon">
+                                    <input type="checkbox" name="formC" class="checkbox_check" value="1">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Get Answer2 -->
+                    <div class="form-group col-md-12">
+                        <label class="col-md-4 control-label" for="formAnswer">Answer: </label>
+                        <div class="col-md-8">
+                            <div class="input-group">
+                                <input id="formAnswer" name="formAnswer" class="form-control" type="text" maxlength="255">
+                                <span class="input-group-addon">
+                                    <input type="checkbox" name="formC" class="checkbox_check" value="1">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- More Answers -->
+                    <div id="AddHere"></div>
+                    <!-- File Button -->
+                    <div class="form-group col-md-12">
+                        <label class="col-md-4 control-label" for="filebutton">Upload Image:</label>
+                        <div class="col-md-8">
+                            <input id="filebutton" name="formFile" class="input-file" type="file" style="vertical-align:top;">
+                        </div>
+                    </div>
+                    <!-- Submit Button -->
+                    <div class="form-group col-md-12">
+                        <label class="col-md-4 control-label" for="submitButton"></label>
+                        <div class="col-md-8">
+                            <button class="btn btn-info" onclick="AddAnswer()"><span class="glyphicon glyphicon-plus"></span> More Answers</button>
+                            <button id="SubmitButton" name="SubmitButton" class="btn btn-success" onclick="SendQuestion()">AddQuestion</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>  <!--Modal Body-->
+
+        </div> <!--Modal Content-->
+    </div> <!--Modal Dialog-->
+</div>
+
+<!--************************List Questions*****************************-->
+<br />
+<ul class="Test" style="list-style-type:none">
+    @Html.Raw(ListHelp.EditListString())
+</ul>
+
+@section scripts{
+    <script>
+        function AddAnswer() {
+            $("<div class='form-group col-md-12'><label class='col-md-4 control-label' for='formAnswer'>Answer: </label><div class='col-md-8'><div class='input-group'><input id='formAnswer' name='formAnswer' class='form-control' type='text' maxlength='255'><span class='input-group-addon'><input type='checkbox' name='formC' class='checkbox_check' value='1'></span></div></div></div>").insertBefore("#AddHere");
+        }
+
+        function SendQuestion() {
+            var formData = new FormData();
+            formData.append("file", document.getElementById("filebutton").files[0]);
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/Home/UploadImage", true);
+            xhr.addEventListener("load", function (evt) { UploadComplete(evt, xhr.responseText); }, false);
+            xhr.addEventListener("error", function (evt) { UploadFailed(evt, xhr.responseText); }, false);
+            xhr.send(formData);
+        }
+
+        function UploadComplete(evt, name) {
+            if (evt.target.status == 200) {
+                var Answers = document.getElementsByName("formAnswer");
+                var Corrects = document.getElementsByName("formC");
+
+                var JSONObj = {};
+                JSONObj.Question = document.getElementsByName("formQuestion")[0].value;
+                JSONObj.QuestionID = "new";
+                JSONObj.Pic = name;
+                JSONObj.Catagory = document.getElementsByName("newCategory")[0].value;
+                JSONObj.CategoryDropDown = document.getElementsByName("formCategory")[0].value;
+                JSONObj.Answers = [];
+                JSONObj.Corrects = [];
+
+                for (var i = 0; i < Answers.length; i++) {
+                    JSONObj.Answers.push(Answers[i].value);
+                    if (Corrects[i].checked) {
+                        JSONObj.Corrects.push(1);
+                    } else {
+                        JSONObj.Corrects.push(0);
+                    }
+                }
+
+                $.ajax({
+                    url: "@(ViewBag.ResultsURL)",
+                    type: "POST",
+                    contentType: "application/json",
+                    dataType: "json",
+                    data: JSON.stringify(JSONObj),
+                    success: function (data) {
+                        if (data != null) {
+                            window.location.href = '@Url.Action("Edit", "Home")';
+                        } else {
+                            alert("ERROR:Data not submitted");
+                        }
+                    }
+                });
+            }
+            else
+            {
+                alert("Error Uploading File" + name);
+            }
+        }
+
+        function UploadFailed(evt, name) {
+            alert("There was an error attempting to upload the file." + name);
+
+        }
+
+    </script>
+}

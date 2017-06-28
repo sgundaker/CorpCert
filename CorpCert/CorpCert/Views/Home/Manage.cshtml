@@ -1,0 +1,186 @@
+﻿@model L2Test.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Manage Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    L2Test.Models.TechModels TechList = new L2Test.Models.TechModels();
+    L2Test.Models.UserMgmt UserList = new L2Test.Models.UserMgmt();
+}
+
+<div class="SubmitFloat">
+    <center></center>
+</div>
+
+<!--
+ _____           _           _     _         _      _____   _____         _
+|  __ \         | |         | |   | |       | |    / __  \ |_   _|       | |
+| |  \/ ___   __| | __ _  __| | __| |_   _  | |    `' / /'   | | ___  ___| |_
+| | __ / _ \ / _` |/ _` |/ _` |/ _` | | | | | |      / /     | |/ _ \/ __| __|
+| |_\ \ (_) | (_| | (_| | (_| | (_| | |_| | | |____./ /___   | |  __/\__ \ |_
+ \____/\___/ \__,_|\__,_|\__,_|\__,_|\__, | \_____/\_____/   \_/\___||___/\__|
+                                      __/ |
+                                     |___/
+-->
+<br />
+<!--************************Add new Admin/User*****************************-->
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-5 col-sm-offset-1">
+                @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <h3>Create New Management Login for Lead</h3><br />
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Email, new { @class = "col-md-5 control-label" })
+                        <div class="col-md-5">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Password, new { @class = "col-md-5 control-label" })
+                        <div class="col-md-5">
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-5 control-label" })
+                        <div class="col-md-5">
+                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-5 col-sm-offset-5">
+                            <input type="submit" class="btn btn-primary" value="Register" />
+                        </div>
+                    </div>
+                }
+                </div>
+            <!--************************List active admin/users*****************************-->
+                <div class="col-md-5 col-sm-offset-1">
+                    <h3>List of Leads:</h3>
+                    <ul class="ActiveLeads" style="list-style-type:none">
+                        @Html.Raw(UserList.UserList())
+                    </ul>
+                </div>
+        </div>
+    </div>
+</div>
+<br />
+<!--************************Add Tech ID*****************************-->
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-5 col-sm-offset-1">
+                <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                    <fieldset>
+                        <h3>Create New Test Login for Tech</h3>
+                        <div class="form-group">
+                            <label class="col-md-5 control-label" for="formTechName">Tech Jomax Login Name</label>
+                            <div class="col-md-5">
+                                <input id="formTechName" name="formTechName" type="text" placeholder="jtoler" class="form-control input-md" required="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-5 control-label" for="submit"></label>
+                            <div class="col-md-5">
+                                <button id="submit" name="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <!--************************List of techs that can take test*****************************-->
+            <div class="col-md-5 col-sm-offset-1">
+                <h3>List of Techs with Active Logins:</h3>
+                <ul class="ActiveTechs" style="list-style-type:none">
+                    @Html.Raw(TechList.GetValid())
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--************************Delete Admin User*****************************-->
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" id="deletebtn" class="close" data-dismiss="modal">&times;</button>
+                <h2 class="modal-title" id="deleteTitle">Error please cancel and try again.</h2>
+            </div>
+            <div class="modal-body">
+
+                <!--FORM STARTS HERE-->
+                <form action="@Url.Action("ManageDelete", "Home")" method="post" enctype="multipart/form-data" class="form-horizontal">
+                    <fieldset>
+                        <input type="hidden" id="deleteValue" name="uid" value="invalid">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="submitButton"></label>
+                            <div class="col-md-8">
+                                <button id="submitButton" name="submitButton" class="btn btn-success">Delete User</button>
+                                <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form> <!--FORM ENDS HERE-->
+            </div>  <!--Modal Body-->
+
+        </div> <!--Modal Content-->
+    </div> <!--Modal Dialog-->
+</div><!--End Modal-->
+<!--************************Change Password for Admin User*****************************-->
+<!-- Modal -->
+<div class="modal fade" id="editModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" id="gallerybtn" class="close" data-dismiss="modal">&times;</button>
+                <h2 class="modal-title" id="resetTitle">Error please try again</h2>
+            </div>
+            <div class="modal-body">
+
+                <!--FORM STARTS HERE-->
+                <form id="editForm" action="@Url.Action("ManageEdit", "Home")" method="post" enctype="multipart/form-data" class="form-horizontal">
+                    <fieldset>
+                        <input type="hidden" id="resetID" name="uid" value="invalid">
+                        <!-- Password input-->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="newPassword">New Password</label>
+                            <div class="col-md-4">
+                                <input id="newPassword" name="newPassword" type="password" placeholder="" class="form-control input-md" required="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="submitButton"></label>
+                            <div class="col-md-8">
+                                <button id="submitButton" name="submitButton" class="btn btn-success">Reset Password</button>
+                                <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form> <!--FORM ENDS HERE-->
+            </div>  <!--Modal Body-->
+
+        </div> <!--Modal Content-->
+    </div> <!--Modal Dialog-->
+</div>
+<script>
+    function deleteUser(user, id) {
+        document.getElementById('deleteTitle').innerHTML = "Are you sure you want to delete " + user + "?";
+        document.getElementById('deleteValue').value = id;
+        $("#deleteModal").modal("show");
+    }
+    function editUser(user, id) {
+        document.getElementById('resetTitle').innerHTML = "Reset password for " + user;
+        document.getElementById('resetID').value = id;
+        $("#editModal").modal("show");
+    }
+</script>
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }

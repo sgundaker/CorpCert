@@ -1,0 +1,131 @@
+﻿
+@{
+    ViewBag.Title = "Configuration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.RestoreURL = Url.Action("Restore", "Home", routeValues: null, protocol: Request.Url.Scheme);
+}
+
+<!--
+ _____           _           _     _         _      _____   _____         _
+|  __ \         | |         | |   | |       | |    / __  \ |_   _|       | |
+| |  \/ ___   __| | __ _  __| | __| |_   _  | |    `' / /'   | | ___  ___| |_
+| | __ / _ \ / _` |/ _` |/ _` |/ _` | | | | | |      / /     | |/ _ \/ __| __|
+| |_\ \ (_) | (_| | (_| | (_| | (_| | |_| | | |____./ /___   | |  __/\__ \ |_
+ \____/\___/ \__,_|\__,_|\__,_|\__,_|\__, | \_____/\_____/   \_/\___||___/\__|
+                                      __/ |
+                                     |___/
+-->
+
+<br />
+<br />
+<form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+    <fieldset>
+
+        <!-- Text input-->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="formQuestions">Number of questions on test</label>
+            <div class="col-md-4">
+                <input id="formQuestions" name="formQuestions" type="text" placeholder="@ViewBag.NumberOfQuestions" class="form-control input-md">
+
+            </div>
+        </div>
+
+        <!-- Text input-->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="formScore">Minimum score percentage to pass</label>
+            <div class="col-md-4">
+                <input id="formScore" name="formScore" type="text" placeholder="@ViewBag.PassingScore" class="form-control input-md">
+
+            </div>
+        </div>
+
+        <!-- Text input-->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="formTimeToTake">Time in minutes to take test</label>
+            <div class="col-md-4">
+                <input id="formTimeToTake" name="formTimeToTake" type="text" placeholder="@ViewBag.TimeToTakeTest" class="form-control input-md">
+
+            </div>
+        </div>
+
+        <!-- Text input-->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="formStart">Time in minutes before Test ID expires</label>
+            <div class="col-md-4">
+                <input id="formStart" name="formStart" type="text" placeholder="@ViewBag.TimeToStartTest" class="form-control input-md">
+
+            </div>
+        </div>
+
+        <!-- Text input-->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="formName">Site Name</label>
+            <div class="col-md-4">
+                <input id="formName" name="formName" type="text" placeholder="@ViewBag.Name" class="form-control input-md">
+
+            </div>
+        </div>
+
+        <!-- Textarea -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="formHomePage">Home Page Text</label>
+            <div class="col-md-4">
+                <textarea class="form-control" id="formHomePage" name="formHomePage" placeholder="@ViewBag.HomePage" rows="10"></textarea>
+            </div>
+        </div>
+
+        <!-- Textarea -->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="formAboutPage">About Page Text</label>
+            <div class="col-md-4">
+                <textarea class="form-control" id="formAboutPage" name="formAboutPage" placeholder="@ViewBag.AboutPage" rows="10"></textarea>
+            </div>
+        </div>
+
+        <!-- Button -->
+        <div class="SubmitFloat">
+            <center>
+                <button id="submitButton" name="submitButton" class="btn btn-success">Submit Changes</button>
+                @Html.ActionLink("Backup Website", "Backup", "Home", null, new { @class = "btn btn-info" })
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#restoreModal">Restore From Backup</button>
+            </center>
+        </div>
+    </fieldset>
+</form>
+<div class="modal fade" id="restoreModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" id="editbtn" class="close" data-dismiss="modal">&times;</button>
+                <h2 class="modal-title">Restore Database From Backup</h2>
+                <center><p>This will reset all site settings and test questions.</p></center>
+            </div>
+            <div class="modal-body">
+                <form action="@ViewBag.RestoreURL" method="post" enctype="multipart/form-data" class="form-horizontal">
+                    <fieldset>
+                        <!-- File Button -->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="file">SQL file (.BAK)</label>
+                            <div class="col-md-4">
+                                <input id="file" name="file" class="input-file" type="file">
+                            </div>
+                        </div>
+
+                        <!-- Button (Double) -->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="Upload"></label>
+                            <div class="col-md-8">
+                                <button id="button1id" name="Upload" class="btn btn-success">Upload File</button>
+                                <button id="cancel" name="cancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+</div>  <!--Modal Body-->
+
+        </div> <!--Modal Content-->
+    </div> <!--Modal Dialog-->
+</div>
+
